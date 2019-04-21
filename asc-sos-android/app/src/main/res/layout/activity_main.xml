@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_height="match_parent"
+              android:layout_width="match_parent"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical">
+
+    <ImageButton
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="end"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:id="@+id/settingsButton"
+        android:src="@drawable/ic_settings_black_48dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:text="@string/sib_q"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="60sp"
+        android:gravity="center"
+        android:id="@+id/sibling_question"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/zero"
+            android:textSize="84sp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:id="@+id/zeroTV"
+            android:onClick="zeroClick"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/one"
+            android:textSize="84sp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:id="@+id/oneTV"
+            android:onClick="oneClick"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/two"
+            android:textSize="84sp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:id="@+id/twoTV"
+            android:onClick="twoClick"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/three"
+            android:textSize="84sp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:id="@+id/threeTV"
+            android:onClick="threeClick"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/four"
+            android:textSize="84sp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:id="@+id/fourTV"
+            android:onClick="fourClick"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/five"
+            android:textSize="84sp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:id="@+id/fiveTV"
+            android:onClick="fiveClick"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/six"
+            android:textSize="84sp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:id="@+id/sixTV"
+            android:onClick="sixClick"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/seven"
+            android:textSize="84sp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:id="@+id/sevenTV"
+            android:onClick="sevenClick"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/eight"
+            android:textSize="84sp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:id="@+id/eightTV"
+            android:onClick="eightClick"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/nine"
+            android:textSize="84sp"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:id="@+id/nineTV"
+            android:onClick="nineClick"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"/>
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>
