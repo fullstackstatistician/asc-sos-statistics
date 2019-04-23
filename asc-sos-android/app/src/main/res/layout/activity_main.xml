@@ -10,18 +10,20 @@
         android:layout_gravity="end"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:id="@+id/settingsButton"
-        android:src="@drawable/ic_settings_black_48dp"/>
+        android:src="@drawable/ic_view_headline_black_48dp"
+        android:onClick="settingsClick"/>
 
     <TextView
+        android:id="@+id/sibling_question"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
+        android:fontFamily="casual"
+        android:gravity="center"
         android:text="@string/sib_q"
         android:textAlignment="center"
         android:textColor="#000000"
-        android:textSize="60sp"
-        android:gravity="center"
-        android:id="@+id/sibling_question"/>
+        android:textSize="60sp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +42,8 @@
             android:id="@+id/zeroTV"
             android:onClick="zeroClick"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:fontFamily="casual"/>
 
         <TextView
             android:layout_width="0dp"
@@ -53,7 +56,8 @@
             android:id="@+id/oneTV"
             android:onClick="oneClick"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:fontFamily="casual"/>
 
         <TextView
             android:layout_width="0dp"
@@ -66,7 +70,8 @@
             android:id="@+id/twoTV"
             android:onClick="twoClick"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:fontFamily="casual"/>
 
         <TextView
             android:layout_width="0dp"
@@ -79,7 +84,8 @@
             android:id="@+id/threeTV"
             android:onClick="threeClick"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:fontFamily="casual"/>
 
         <TextView
             android:layout_width="0dp"
@@ -92,7 +98,8 @@
             android:id="@+id/fourTV"
             android:onClick="fourClick"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:fontFamily="casual"/>
 
 
     </LinearLayout>
@@ -113,7 +120,8 @@
             android:id="@+id/fiveTV"
             android:onClick="fiveClick"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:fontFamily="casual"/>
 
         <TextView
             android:layout_width="0dp"
@@ -126,7 +134,8 @@
             android:id="@+id/sixTV"
             android:onClick="sixClick"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:fontFamily="casual"/>
 
         <TextView
             android:layout_width="0dp"
@@ -139,7 +148,8 @@
             android:id="@+id/sevenTV"
             android:onClick="sevenClick"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:fontFamily="casual"/>
 
         <TextView
             android:layout_width="0dp"
@@ -152,7 +162,8 @@
             android:id="@+id/eightTV"
             android:onClick="eightClick"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:fontFamily="casual"/>
 
         <TextView
             android:layout_width="0dp"
@@ -165,7 +176,8 @@
             android:id="@+id/nineTV"
             android:onClick="nineClick"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:fontFamily="casual"/>
 
     </LinearLayout>
 

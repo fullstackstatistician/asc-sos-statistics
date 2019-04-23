@@ -5,19 +5,22 @@ import android.accounts.AccountManager;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,6 +34,7 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.ExponentialBackOff;
 import com.google.api.services.sheets.v4.SheetsScopes;
+import com.google.api.services.sheets.v4.model.ClearValuesRequest;
 import com.google.api.services.sheets.v4.model.ValueRange;
 
 import java.io.IOException;
@@ -41,14 +45,12 @@ import java.util.List;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class Main3Activity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
-    TextView textView;
-    int sibNum;
-    boolean gender;
-
+public class ViewDataActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
+    boolean resetSpreadsheet;
     GoogleAccountCredential mCredential;
-    //private TextView mOutputText;
-    //private Button mCallApiButton;
+    private TextView mOutputText;
+    private Button mCallApiButton;
+    private Button mButton2;
     ProgressDialog mProgress;
 
     static final int REQUEST_ACCOUNT_PICKER = 1000;
@@ -56,87 +58,99 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
     static final int REQUEST_GOOGLE_PLAY_SERVICES = 1002;
     static final int REQUEST_PERMISSION_GET_ACCOUNTS = 1003;
 
-    //private static final String BUTTON_TEXT = "Call Google Sheets API";
+    private static final String BUTTON_TEXT = "View spreadsheet data";
     private static final String PREF_ACCOUNT_NAME = "accountName";
     private static final String[] SCOPES = { SheetsScopes.SPREADSHEETS };
 
+    /**
+     * Create the main activity.
+     * @param savedInstanceState previously saved instance data.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main3);
+        LinearLayout activityLayout = new LinearLayout(this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        activityLayout.setLayoutParams(lp);
+        activityLayout.setOrientation(LinearLayout.VERTICAL);
+        activityLayout.setPadding(16, 16, 16, 16);
 
-        getWindow().getDecorView().setSystemUiVisibility(
-                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        | View.SYSTEM_UI_FLAG_FULLSCREEN
-                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        resetSpreadsheet = false;
 
-        doStuff();
-    }
+        ViewGroup.LayoutParams tlp = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
 
-    private void doStuff() {
+        mButton2 = new Button(this);
+        mButton2.setText("Clear spreadsheet");
+        mButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mButton2.setEnabled(false);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(ViewDataActivity.this);
+                builder.setTitle("Clear spreadsheet?");
+
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        resetSpreadsheet = true;
+                        mOutputText.setText("");
+                        getResultsFromApi();
+                    }
+                });
+
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // do nothing
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+                mButton2.setEnabled(true);
+            }
+        });
+        activityLayout.addView(mButton2);
+
+        mCallApiButton = new Button(this);
+        mCallApiButton.setText(BUTTON_TEXT);
+        mCallApiButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallApiButton.setEnabled(false);
+                resetSpreadsheet = false;
+                mOutputText.setText("");
+                getResultsFromApi();
+                mCallApiButton.setEnabled(true);
+            }
+        });
+        activityLayout.addView(mCallApiButton);
+
+        mOutputText = new TextView(this);
+        mOutputText.setLayoutParams(tlp);
+        mOutputText.setPadding(16, 16, 16, 16);
+        mOutputText.setVerticalScrollBarEnabled(true);
+        mOutputText.setMovementMethod(new ScrollingMovementMethod());
+        mOutputText.setText("");
+        activityLayout.addView(mOutputText);
+
         mProgress = new ProgressDialog(this);
-        mProgress.setMessage("Sending Data...");
-        mProgress.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        mProgress.setMessage("Calling Google Sheets API...");
+
+        setContentView(activityLayout);
 
         // Initialize credentials and service object.
         mCredential = GoogleAccountCredential.usingOAuth2(
                 getApplicationContext(), Arrays.asList(SCOPES))
                 .setBackOff(new ExponentialBackOff());
-
-        Bundle bundle = getIntent().getExtras();
-        textView = findViewById(R.id.endTextView);
-
-        sibNum = 0;
-        gender = true;
-
-        if (bundle != null) {
-            sibNum = (int) bundle.get("sibNum");
-            gender = (boolean) bundle.get("gender");
-        }
-
-        if (sibNum == 1)
-            textView.setText("1 sibling\n");
-        else
-            textView.setText(sibNum + " siblings\n");
-
-        Drawable img = getResources().getDrawable(R.drawable.female);
-
-        if (gender)
-            img = getResources().getDrawable(R.drawable.male);
-
-        textView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, scaleImage(img, 0.1f));
     }
 
-    public void checkClick(View view) {
-        getResultsFromApi();
-    }
 
-    public void xClick(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down);
-    }
-
-    private Drawable scaleImage (Drawable image, float scaleFactor) {
-
-        if (!(image instanceof BitmapDrawable)) {
-            return image;
-        }
-
-        Bitmap b = ((BitmapDrawable)image).getBitmap();
-
-        int sizeX = Math.round(image.getIntrinsicWidth() * scaleFactor);
-        int sizeY = Math.round(image.getIntrinsicHeight() * scaleFactor);
-
-        Bitmap bitmapResized = Bitmap.createScaledBitmap(b, sizeX, sizeY, false);
-
-        image = new BitmapDrawable(getResources(), bitmapResized);
-
-        return image;
-    }
 
     /**
      * Attempt to call the API, after verifying that all the preconditions are
@@ -151,9 +165,9 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
         } else if (! isDeviceOnline()) {
-            textView.setText("No network connection available.");
+            mOutputText.setText("No network connection available.");
         } else {
-            new Main3Activity.MakeRequestTask(mCredential).execute();
+            new MakeRequestTask(mCredential).execute();
         }
     }
 
@@ -209,7 +223,9 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
         switch(requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode != RESULT_OK) {
-                    textView.setText("This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.");
+                    mOutputText.setText(
+                            "This app requires Google Play Services. Please install " +
+                                    "Google Play Services on your device and relaunch this app.");
                 } else {
                     getResultsFromApi();
                 }
@@ -328,7 +344,7 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
             final int connectionStatusCode) {
         GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
         Dialog dialog = apiAvailability.getErrorDialog(
-                Main3Activity.this,
+                ViewDataActivity.this,
                 connectionStatusCode,
                 REQUEST_GOOGLE_PLAY_SERVICES);
         dialog.show();
@@ -358,7 +374,7 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
         @Override
         protected List<String> doInBackground(Void... params) {
             try {
-                return sendDataToApi();
+                return getDataFromApi();
             } catch (Exception e) {
                 mLastError = e;
                 cancel(true);
@@ -367,52 +383,53 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
         }
 
         /**
-         * Fetch a list of names and majors of students in a sample spreadsheet:
          * https://docs.google.com/spreadsheets/d/1XYl_7rBRnxLchOy4DVfsbhw_Zh8iWekoRYmK0kLbeME/edit
-         * @return List of names and majors
+         * @return numSiblings and gender
          * @throws IOException
          */
-        private List<String> sendDataToApi() throws IOException {
+        private List<String> getDataFromApi() throws IOException {
             String spreadsheetId = "1XYl_7rBRnxLchOy4DVfsbhw_Zh8iWekoRYmK0kLbeME";
             String range = "Sheet1!A:B";
-            String gend;
+            List<String> results = new ArrayList<>();
 
-            if (gender)
-                gend = "boy";
-            else
-                gend = "girl";
+            if (resetSpreadsheet) {
+                this.mService.spreadsheets().values().clear(spreadsheetId, range, new ClearValuesRequest()).execute();
 
-            ValueRange values = new ValueRange();
-            values.setValues(Arrays.asList(Arrays.<Object>asList(sibNum, gend)));
+                ValueRange values = new ValueRange();
+                values.setValues(Arrays.asList(Arrays.<Object>asList("numSiblings", "gender")));
 
-            this.mService.spreadsheets().values().append(spreadsheetId, range, values).setValueInputOption("USER_ENTERED").execute();
+                this.mService.spreadsheets().values().append(spreadsheetId, "Sheet1!A1:B1", values).setValueInputOption("USER_ENTERED").execute();
 
-            return new ArrayList<>();
+                resetSpreadsheet = false;
+            }
+
+
+            ValueRange response = this.mService.spreadsheets().values()
+                    .get(spreadsheetId, range)
+                    .execute();
+            List<List<Object>> values = response.getValues();
+            if (values != null) {
+                for (List row : values) {
+                    results.add(row.get(0) + ", " + row.get(1));
+                }
+            }
+            return results;
         }
-
-
 
         @Override
         protected void onPreExecute() {
-            //mOutputText.setText("");
+            mOutputText.setText("");
             mProgress.show();
-            mProgress.getWindow().getDecorView().setSystemUiVisibility(Main3Activity.this.getWindow().getDecorView().getSystemUiVisibility());
-            mProgress.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
         }
 
         @Override
         protected void onPostExecute(List<String> output) {
             mProgress.hide();
             if (output == null || output.size() == 0) {
-                //mOutputText.setText("No results returned.");
+                mOutputText.setText("No results returned.");
             } else {
-                //output.add(0, "Data retrieved using the Google Sheets API:");
-                //mOutputText.setText(TextUtils.join("\n", output));
+                mOutputText.setText(TextUtils.join("\n", output));
             }
-
-            Intent intent = new Intent(Main3Activity.this, MainActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_down);
         }
 
         @Override
@@ -426,12 +443,13 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
                 } else if (mLastError instanceof UserRecoverableAuthIOException) {
                     startActivityForResult(
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
-                            Main3Activity.REQUEST_AUTHORIZATION);
+                            ViewDataActivity.REQUEST_AUTHORIZATION);
                 } else {
-                    textView.setText("The following error occurred:\n" + mLastError.getMessage());
+                    mOutputText.setText("The following error occurred:\n"
+                            + mLastError.getMessage());
                 }
             } else {
-                textView.append("Request cancelled.");
+                mOutputText.setText("Request cancelled.");
             }
         }
     }

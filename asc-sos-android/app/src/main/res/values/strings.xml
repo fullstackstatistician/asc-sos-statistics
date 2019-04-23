@@ -11,5 +11,5 @@
     <string name="seven">7</string>
     <string name="eight">8</string>
     <string name="nine">9</string>
-    <string name="gender_q">Which one are you?</string>
+    <string name="gender_q">Are you a boy or a girl?</string>
 </resources>

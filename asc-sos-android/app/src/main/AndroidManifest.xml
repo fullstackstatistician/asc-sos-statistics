@@ -3,6 +3,7 @@
           package="com.humzaman.asc_sos_android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
 
     <application
@@ -13,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".SettingsActivity">
+        <activity
+            android:name=".ViewDataActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".Main3Activity"
