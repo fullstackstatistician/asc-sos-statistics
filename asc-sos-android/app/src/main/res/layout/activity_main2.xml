@@ -16,16 +16,17 @@
         android:onClick="backUpClick"/>
 
     <TextView
+        android:id="@+id/gender_question"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:fontFamily="casual"
+        android:gravity="center"
         android:text="@string/gender_q"
         android:textAlignment="center"
         android:textColor="#000000"
         android:textSize="60sp"
-        android:gravity="center"
-        android:id="@+id/gender_question"
-        android:fontFamily="casual"/>
+        android:textStyle="bold"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,7 +39,7 @@
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/male"
+            android:src="@drawable/ic_boy"
             android:id="@+id/buttonMale"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -49,7 +50,7 @@
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/female"
+            android:src="@drawable/ic_girl"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:onClick="femaleClick"/>

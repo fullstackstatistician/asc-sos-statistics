@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -102,12 +103,12 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
         else
             textView.setText(sibNum + " siblings\n");
 
-        Drawable img = getResources().getDrawable(R.drawable.female);
+        Drawable img = getResources().getDrawable(R.drawable.ic_girl);
 
         if (gender)
-            img = getResources().getDrawable(R.drawable.male);
+            img = getResources().getDrawable(R.drawable.ic_boy);
 
-        textView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, scaleImage(img, 0.1f));
+        textView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, scaleImage(img, 0.5f));
     }
 
     public void checkClick(View view) {
@@ -121,12 +122,17 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
     }
 
     private Drawable scaleImage (Drawable image, float scaleFactor) {
+        Bitmap b;
 
         if (!(image instanceof BitmapDrawable)) {
-            return image;
+            Canvas canvas = new Canvas();
+            b = Bitmap.createBitmap(image.getIntrinsicWidth(), image.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            canvas.setBitmap(b);
+            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+            image.draw(canvas);
         }
-
-        Bitmap b = ((BitmapDrawable)image).getBitmap();
+        else
+            b = ((BitmapDrawable)image).getBitmap();
 
         int sizeX = Math.round(image.getIntrinsicWidth() * scaleFactor);
         int sizeY = Math.round(image.getIntrinsicHeight() * scaleFactor);
@@ -403,12 +409,14 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
         @Override
         protected void onPostExecute(List<String> output) {
             mProgress.hide();
+            /*
             if (output == null || output.size() == 0) {
-                //mOutputText.setText("No results returned.");
+                mOutputText.setText("No results returned.");
             } else {
-                //output.add(0, "Data retrieved using the Google Sheets API:");
-                //mOutputText.setText(TextUtils.join("\n", output));
+                output.add(0, "Data retrieved using the Google Sheets API:");
+                mOutputText.setText(TextUtils.join("\n", output));
             }
+            */
 
             Intent intent = new Intent(Main3Activity.this, MainActivity.class);
             startActivity(intent);
