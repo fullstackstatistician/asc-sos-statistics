@@ -46,70 +46,70 @@ public class MainActivity extends AppCompatActivity {
 
     public void zeroClick(View view) {
         Intent intent = new Intent(this, Main2Activity.class);
-        intent.putExtra("sibNum", 0);
+        intent.putExtra("numSiblings", 0);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
 
     public void oneClick(View view) {
         Intent intent = new Intent(this, Main2Activity.class);
-        intent.putExtra("sibNum", 1);
+        intent.putExtra("numSiblings", 1);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
 
     public void twoClick(View view) {
         Intent intent = new Intent(this, Main2Activity.class);
-        intent.putExtra("sibNum", 2);
+        intent.putExtra("numSiblings", 2);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
 
     public void threeClick(View view) {
         Intent intent = new Intent(this, Main2Activity.class);
-        intent.putExtra("sibNum", 3);
+        intent.putExtra("numSiblings", 3);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
 
     public void fourClick(View view) {
         Intent intent = new Intent(this, Main2Activity.class);
-        intent.putExtra("sibNum", 4);
+        intent.putExtra("numSiblings", 4);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
 
     public void fiveClick(View view) {
         Intent intent = new Intent(this, Main2Activity.class);
-        intent.putExtra("sibNum", 5);
+        intent.putExtra("numSiblings", 5);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
 
     public void sixClick(View view) {
         Intent intent = new Intent(this, Main2Activity.class);
-        intent.putExtra("sibNum", 6);
+        intent.putExtra("numSiblings", 6);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
 
     public void sevenClick(View view) {
         Intent intent = new Intent(this, Main2Activity.class);
-        intent.putExtra("sibNum", 7);
+        intent.putExtra("numSiblings", 7);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
 
     public void eightClick(View view) {
         Intent intent = new Intent(this, Main2Activity.class);
-        intent.putExtra("sibNum", 8);
+        intent.putExtra("numSiblings", 8);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
 
     public void nineClick(View view) {
         Intent intent = new Intent(this, Main2Activity.class);
-        intent.putExtra("sibNum", 9);
+        intent.putExtra("numSiblings", 9);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }

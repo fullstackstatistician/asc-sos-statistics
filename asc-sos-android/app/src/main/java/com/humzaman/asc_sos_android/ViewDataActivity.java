@@ -384,7 +384,7 @@ public class ViewDataActivity extends AppCompatActivity implements EasyPermissio
 
         /**
          * https://docs.google.com/spreadsheets/d/1XYl_7rBRnxLchOy4DVfsbhw_Zh8iWekoRYmK0kLbeME/edit
-         * @return numSiblings and gender
+         * @return numSiblings and sex
          * @throws IOException
          */
         private List<String> getDataFromApi() throws IOException {
@@ -396,7 +396,7 @@ public class ViewDataActivity extends AppCompatActivity implements EasyPermissio
                 this.mService.spreadsheets().values().clear(spreadsheetId, range, new ClearValuesRequest()).execute();
 
                 ValueRange values = new ValueRange();
-                values.setValues(Arrays.asList(Arrays.<Object>asList("numSiblings", "gender")));
+                values.setValues(Arrays.asList(Arrays.<Object>asList("numSiblings", "sex")));
 
                 this.mService.spreadsheets().values().append(spreadsheetId, "Sheet1!A1:B1", values).setValueInputOption("USER_ENTERED").execute();
 

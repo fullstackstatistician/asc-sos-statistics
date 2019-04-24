@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
@@ -44,8 +45,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class Main3Activity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
     TextView textView;
-    int sibNum;
-    boolean gender;
+    int numSiblings;
+    boolean sex;
 
     GoogleAccountCredential mCredential;
     //private TextView mOutputText;
@@ -90,22 +91,22 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
         Bundle bundle = getIntent().getExtras();
         textView = findViewById(R.id.endTextView);
 
-        sibNum = 0;
-        gender = true;
+        numSiblings = 0;
+        sex = true;
 
         if (bundle != null) {
-            sibNum = (int) bundle.get("sibNum");
-            gender = (boolean) bundle.get("gender");
+            numSiblings = (int) bundle.get("numSiblings");
+            sex = (boolean) bundle.get("sex");
         }
 
-        if (sibNum == 1)
+        if (numSiblings == 1)
             textView.setText("1 sibling\n");
         else
-            textView.setText(sibNum + " siblings\n");
+            textView.setText(numSiblings + " siblings\n");
 
         Drawable img = getResources().getDrawable(R.drawable.ic_girl);
 
-        if (gender)
+        if (sex)
             img = getResources().getDrawable(R.drawable.ic_boy);
 
         textView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, scaleImage(img, 0.5f));
@@ -157,6 +158,9 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
         } else if (mCredential.getSelectedAccountName() == null) {
             chooseAccount();
         } else if (! isDeviceOnline()) {
+            textView.setCompoundDrawables(null, null, null, null);
+            textView.setTextSize(32);
+            textView.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
             textView.setText("No network connection available.");
         } else {
             new Main3Activity.MakeRequestTask(mCredential).execute();
@@ -215,6 +219,9 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
         switch(requestCode) {
             case REQUEST_GOOGLE_PLAY_SERVICES:
                 if (resultCode != RESULT_OK) {
+                    textView.setCompoundDrawables(null, null, null, null);
+                    textView.setTextSize(32);
+                    textView.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
                     textView.setText("This app requires Google Play Services. Please install Google Play Services on your device and relaunch this app.");
                 } else {
                     getResultsFromApi();
@@ -375,21 +382,21 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
         /**
          * Fetch a list of names and majors of students in a sample spreadsheet:
          * https://docs.google.com/spreadsheets/d/1XYl_7rBRnxLchOy4DVfsbhw_Zh8iWekoRYmK0kLbeME/edit
-         * @return List of names and majors
+         * @return List of numSiblings and sex
          * @throws IOException
          */
         private List<String> sendDataToApi() throws IOException {
             String spreadsheetId = "1XYl_7rBRnxLchOy4DVfsbhw_Zh8iWekoRYmK0kLbeME";
             String range = "Sheet1!A:B";
-            String gend;
+            String sexString;
 
-            if (gender)
-                gend = "boy";
+            if (sex)
+                sexString = "boy";
             else
-                gend = "girl";
+                sexString = "girl";
 
             ValueRange values = new ValueRange();
-            values.setValues(Arrays.asList(Arrays.<Object>asList(sibNum, gend)));
+            values.setValues(Arrays.asList(Arrays.<Object>asList(numSiblings, sexString)));
 
             this.mService.spreadsheets().values().append(spreadsheetId, range, values).setValueInputOption("USER_ENTERED").execute();
 
@@ -436,7 +443,10 @@ public class Main3Activity extends AppCompatActivity implements EasyPermissions.
                             ((UserRecoverableAuthIOException) mLastError).getIntent(),
                             Main3Activity.REQUEST_AUTHORIZATION);
                 } else {
-                    textView.setText("The following error occurred:\n" + mLastError.getMessage());
+                    textView.setCompoundDrawables(null, null, null, null);
+                    textView.setTextSize(32);
+                    textView.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
+                    textView.setText("Error:\n" + mLastError.getMessage());
                 }
             } else {
                 textView.append("Request cancelled.");

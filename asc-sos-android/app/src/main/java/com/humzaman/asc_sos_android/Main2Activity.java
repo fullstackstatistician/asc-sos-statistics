@@ -31,9 +31,9 @@ public class Main2Activity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         Intent intent = new Intent(this, Main3Activity.class);
         if (bundle != null) {
-            intent.putExtra("sibNum", (int) bundle.get("sibNum"));
+            intent.putExtra("numSiblings", (int) bundle.get("numSiblings"));
         }
-        intent.putExtra("gender", true);
+        intent.putExtra("sex", true);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
@@ -42,9 +42,9 @@ public class Main2Activity extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         Intent intent = new Intent(this, Main3Activity.class);
         if (bundle != null) {
-            intent.putExtra("sibNum", (int) bundle.get("sibNum"));
+            intent.putExtra("numSiblings", (int) bundle.get("numSiblings"));
         }
-        intent.putExtra("gender", false);
+        intent.putExtra("sex", false);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_up);
     }
